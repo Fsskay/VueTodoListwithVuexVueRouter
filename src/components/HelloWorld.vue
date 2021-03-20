@@ -2,7 +2,12 @@
     <div class="hello">
 
         <input type="text" v-model="inputValue">
+
         <button v-on:click="add">提交</button>
+
+        <input type="text" v-model="searchValue">
+        <button v-on:click="searchTodo">搜索</button>
+
 
         <br/>
         <ul v-if="view=='ALL'">
@@ -33,13 +38,9 @@
                 <button v-on:click="editTodo(todo.id)">编辑</button>
             </li>
         </ul>
-
-
         <button v-on:click="showAll"> 显示全部</button>
         <button v-on:click="showFinished"> 显示已完成</button>
         <button v-on:click="showUnFinished"> 显示未完成</button>
-
-
     </div>
 </template>
 
@@ -50,8 +51,9 @@
             {
                 return {
                     inputValue: '',
-                    list: [],
+                    list: this.$store.state.list,
                     view:'ALL',
+                    searchValue:'',
                 }
             }
         },
@@ -84,6 +86,11 @@
             showUnFinished:function () {
                 this.view='UNFINISHIEDTODO'
 
+            },
+            searchTodo:function (searchValue) {
+                searchValue=this.searchValue
+                this.$store.commit("searchTodo",searchValue)
+                this.$router.push("/searchResult")
             }
         },
         computed:{
